@@ -49,8 +49,8 @@ resource "aws_security_group" "web_sg" {
 # 2. VIRTUAL MACHINE / COMPUTE INSTANCE (PATCHED)
 # ------------------------------------------------------
 resource "aws_instance" "app_server" {
-  ami           = "ami-0c7217cdde317cfec" # Standard Ubuntu 22.04 LTS (us-east-1)
-  instance_type = "t2.micro"              # AWS Free Tier eligible (1 vCPU, 1GB RAM)
+  ami           = "ami-0c7217cdde317cfec" 
+  instance_type = "t3.micro"              
 
   vpc_security_group_ids = [aws_security_group.web_sg.id]
 
