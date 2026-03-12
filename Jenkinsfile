@@ -5,7 +5,6 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('aws-access-key')
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
         AWS_DEFAULT_REGION    = 'us-east-1'
-        TF_VAR_my_ip          = credentials('my-personal-ip')
     }
 
     stages {
@@ -27,8 +26,11 @@ pipeline {
             steps {
                 echo 'Initializing and Planning AWS Infrastructure...'
                 dir('terraform') {
-                    sh 'terraform init'
-                    sh 'terraform plan'
+                    sh '''
+                    export TF_VAR_my_ip=$(curl -s https://ipv4.icanhazip.com)
+                    terraform init
+                    terraform plan
+                    '''
                 }
             }
         }
@@ -37,7 +39,11 @@ pipeline {
             steps {
                 echo 'Deploying Infrastructure to AWS...'
                 dir('terraform') {
-                    sh 'terraform apply -auto-approve'
+                    // Jenkins fetches the IP again just to be safe, then deploys!
+                    sh '''
+                    export TF_VAR_my_ip=$(curl -s https://ipv4.icanhazip.com)
+                    terraform apply -auto-approve
+                    '''
                 }
             }
         }
