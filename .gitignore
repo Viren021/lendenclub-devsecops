@@ -1,3 +1,7 @@
+# Local Jenkins & Keys
+jenkins-setup/
+*.pem
+
 # Python ignores
 venv/
 env/

@@ -7,24 +7,28 @@ terraform {
   }
 }
 
+variable "my_ip" {
+  description = "Secure IP address passed from Jenkins vault"
+  type        = string
+}
+
 provider "aws" {
   region = "us-east-1"
-  # Keys will be passed via Jenkins / Environment Variables later
 }
 
 # ------------------------------------------------------
-# 1. SECURITY GROUP (PATCHED FOR TRIVY COMPLIANCE)
+# 1. SECURITY GROUP
 # ------------------------------------------------------
 resource "aws_security_group" "web_sg" {
   name        = "lendenclub_app_sg"
   description = "Secure security group for deepfake app"
 
   ingress {
-    description = "SSH from internal network only"
+    description = "SSH from my personal laptop only"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8"]
+    cidr_blocks = ["${var.my_ip}/32"] 
   }
 
   ingress {
@@ -35,7 +39,6 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  
   egress {
     description = "Outbound traffic to internal network"
     from_port   = 0
@@ -46,11 +49,13 @@ resource "aws_security_group" "web_sg" {
 }
 
 # ------------------------------------------------------
-# 2. VIRTUAL MACHINE / COMPUTE INSTANCE (PATCHED)
+# 2. VIRTUAL MACHINE / COMPUTE INSTANCE
 # ------------------------------------------------------
 resource "aws_instance" "app_server" {
   ami           = "ami-0c7217cdde317cfec" 
   instance_type = "t3.micro"              
+
+  key_name      = "lendenclub-key"
 
   vpc_security_group_ids = [aws_security_group.web_sg.id]
 
