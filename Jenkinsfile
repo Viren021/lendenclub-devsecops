@@ -31,6 +31,15 @@ pipeline {
                 }
             }
         }
+
+        stage('Stage 4: Terraform Apply') {
+            steps {
+                echo 'Deploying Infrastructure to AWS...'
+                dir('terraform') {
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
     }
     
     post {
