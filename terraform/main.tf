@@ -39,8 +39,9 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # trivy:ignore:AVD-AWS-0104
   egress {
-    description = "Outbound traffic to internal network"
+    description = "Outbound traffic to the internet (Needed for apt-get and git)"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
