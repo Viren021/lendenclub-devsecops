@@ -13,23 +13,20 @@ provider "aws" {
 }
 
 # ------------------------------------------------------
-# 1. SECURITY GROUP (INTENTIONAL VULNERABILITY INCLUDED)
+# 1. SECURITY GROUP (PATCHED FOR TRIVY COMPLIANCE)
 # ------------------------------------------------------
 resource "aws_security_group" "web_sg" {
   name        = "lendenclub_app_sg"
-  description = "Security group for deepfake app with intentional flaws"
+  description = "Secure security group for deepfake app"
 
-  # 🚨 INTENTIONAL VULNERABILITY 1: SSH open to the entire internet (0.0.0.0/0)
-  # Trivy will flag this as a HIGH/CRITICAL issue during the pipeline scan.
   ingress {
-    description = "SSH from anywhere"
+    description = "SSH from internal network only"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/8"]
   }
 
-  # Allow inbound traffic for your Flask web app (Port 3000)
   ingress {
     description = "Flask Application Port"
     from_port   = 3000
@@ -38,23 +35,32 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Allow all outbound traffic (standard practice)
+  
   egress {
+    description = "Outbound traffic to internal network"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["10.0.0.0/8"]
   }
 }
 
 # ------------------------------------------------------
-# 2. VIRTUAL MACHINE / COMPUTE INSTANCE
+# 2. VIRTUAL MACHINE / COMPUTE INSTANCE (PATCHED)
 # ------------------------------------------------------
 resource "aws_instance" "app_server" {
   ami           = "ami-0c7217cdde317cfec" # Standard Ubuntu 22.04 LTS (us-east-1)
   instance_type = "t2.micro"              # AWS Free Tier eligible (1 vCPU, 1GB RAM)
 
   vpc_security_group_ids = [aws_security_group.web_sg.id]
+
+  root_block_device {
+    encrypted = true
+  }
+
+  metadata_options {
+    http_tokens = "required"
+  }
 
   tags = {
     Name        = "LenDenClub-Mocked-Deepfake-App"
@@ -63,7 +69,7 @@ resource "aws_instance" "app_server" {
 }
 
 # ------------------------------------------------------
-# 3. OUTPUTS (To grab the Public IP easily)
+# 3. OUTPUTS
 # ------------------------------------------------------
 output "server_public_ip" {
   description = "The Public IP address of the deployed web server"
