@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('aws-access-key')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+        AWS_DEFAULT_REGION    = 'us-east-1'
+    }
+
     stages {
         stage('Stage 1: Checkout') {
             steps {
@@ -26,6 +32,7 @@ pipeline {
             }
         }
     }
+    
     post {
         always {
             echo 'Pipeline execution complete. Check logs for Trivy vulnerability reports.'
