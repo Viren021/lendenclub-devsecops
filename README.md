@@ -75,4 +75,4 @@ During the development of this pipeline, AI (Gemini) was utilized to analyze fai
   ![Final Passing Scan](https://github.com/user-attachments/assets/eeb38ac4-2bff-418e-a898-ab3866e4826d)
   
 * **Application Running on Cloud Public IP:**
-  ![Live Application](https://github.com/user-attachments/assets/your-unique-link-3)
+  ![Live Application](https://github.com/user-attachments/assets/8a389d91-a35d-479e-b869-b4670ed0e689)
