@@ -69,7 +69,7 @@ During the development of this pipeline, AI (Gemini) was utilized to analyze fai
 ## 📸 Required Screenshots
 
 * **Initial Failing Jenkins Scan:**
-  ![Initial Failing Scan](https://github.com/user-attachments/assets/your-unique-link-1)
+  ![Initial Failing Scan](https://github.com/user-attachments/assets/912b8f63-c684-4bb9-9c26-bcb0b720f928)
   
 * **Final Passing Jenkins Scan:**
   ![Final Passing Scan](https://github.com/user-attachments/assets/your-unique-link-2)
