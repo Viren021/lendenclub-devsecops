@@ -65,3 +65,14 @@ During the development of this pipeline, AI (Gemini) was utilized to analyze fai
 * **AI Recommended Change:** AI explained the concept of documented security exceptions and provided the inline `# trivy:ignore:AVD-AWS-0104` tag, allowing the pipeline to pass while acknowledging the intentional architectural requirement.
 
 ---
+
+## 📸 Required Screenshots
+
+* **Initial Failing Jenkins Scan:**
+  ![Initial Failing Scan](https://github.com/user-attachments/assets/your-unique-link-1)
+  
+* **Final Passing Jenkins Scan:**
+  ![Final Passing Scan](https://github.com/user-attachments/assets/your-unique-link-2)
+  
+* **Application Running on Cloud Public IP:**
+  ![Live Application](https://github.com/user-attachments/assets/your-unique-link-3)
